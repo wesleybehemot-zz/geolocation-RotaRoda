@@ -1,0 +1,1 @@
+{"usr":"vintage001","pwd":"66542J@cK","valid":"false","nome":"Wesley"}
