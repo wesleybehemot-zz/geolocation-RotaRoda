@@ -5,10 +5,10 @@ Service serv = Service();
 class Client {
   int _idUsuario = 0;
 
-  int get idUsuario => _idUsuario;
-  void set idUsuario(int value) => _idUsuario = value;
+  int get getidUsuario => _idUsuario;
+  set setidUsuario(int value) => _idUsuario = value;
 
-  showinf() => print('Seu registro: $idUsuario');
+  showinf() => print('Seu registro: $getidUsuario');
 
   pedido() {
     print('Procurando pedidos de entregas ...');

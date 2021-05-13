@@ -1,33 +1,60 @@
-import 'backend/Auxiliary.dart';
 import 'package:flutter/material.dart';
-import 'backend/Person.dart';
+import 'package:rotaroda/backend/apis/push.dart';
 
-Suport sup = Suport();
-Auxiliary axi = Auxiliary();
-Person ps = Person();
+// # TESTE
+import 'ui/login.dart';
+//import 'ui/register.dart';
+// #####
+
+String title;
 
 void main() {
-  WidgetsFlutterBinding();
-  sup.permission();
-  sup.verificFolder();
-  sup.reader();
-  
-//  sup.dateTime();
-
-  runApp(MaterialApp(
-    title: 'FirstApp',
-    home: Apepe(),
-  ));
+  runApp(Methodbuild());
+  Push();
+  Push().push();
 }
 
-class Apepe extends StatelessWidget {
+class Methodbuild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Bem Vindo ${Auxiliary.name} '),
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        primaryColor: Colors.black,
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.black),
+          hintStyle: TextStyle(color: Colors.grey),
+        ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      body: Center(),
+      title: 'rotaRoda',
+      home: Apape(),
     );
   }
 }
+//     body: Center(
+//       child: Column(
+//         children: [
+
+//           // Row(
+//           //   FlatButton(
+//           //   child: Text('Login'),
+//           //   color: Colors.black,
+//           //   textColor: Colors.white,
+//           //   onPressed: () {},
+//           // ),
+//           // FlatButton(
+//           //   child: Text('Cadastro'),
+//           //   color: Colors.black,
+//           //   textColor: Colors.white,
+//           //   onPressed: () {},
+//           // ),),
+//         ],
+//       ),
+//     ),
+//   );
+// WidgetsFlutterBinding();
+// sup.permission();
+//sup.datetime();
+// sup.verificFolder();
+// sup.reader();

@@ -131,14 +131,14 @@ class Service extends Person {
   createOs(bool os) {
     this.os = '1';
     this.remetente = 'Vicente';
-    this.destinario = Nome;
+    this.destinario = getNome;
     
     if (os) {
       print('Entrega a caminho\n');
       print('Saindo de: ${this.remetente}');
       print('Destino: ${this.destinario}');
       print('Em nome de: ${this.client}');
-      print('Entregador: ${driver}');
+      print('Entregador: $driver');
     } else
       print('Nenhum serviço');
   }

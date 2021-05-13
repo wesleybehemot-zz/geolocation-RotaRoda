@@ -1,135 +1,137 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:isolate';
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rotaroda/backend/apis/waterDivider.dart';
 import 'package:via_cep/via_cep.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+//import 'package:simple_permissions/simple_permissions.dart';
 
 DateTime now = DateTime.now();
 
 class Auxiliary {
-  static var path = Directory.current.path + "user.txt";
- // Directory directory = ${"Directory.current  "backend/resource/user.txt""};
+  // Directory directory = ${"Directory.current  "backend/resource/user.txt""};
 
-  static String folderUser = path ;
-  static String folderLog = folderUser;
+  static String folderUser;
+  static String folderApp;
+  static String folderLog;
   //  ('/storage/emulated/0/Android/data/com.locomation.lc/resource');
-  static String fileUser = ('/user.txt');
-
-  static String fileLog = ('/log.txt');
-  static String allLog = '${folderLog}${fileLog}';
-  static String allusr = '${folderUser}${fileUser}';
-
-  String nowTime = 'Hora ${now.hour}:${now.minute}';
-  String nowDate = 'Date ${now.day}/${now.month}/${now.year}';
+  static String fileUser = '/user.txt';
+  static String fileLog = '/log.txt';
+  static String alllog;
+  static String allusr;
+  static String nowTime = 'Hora ${now.hour}:${now.minute}';
+  static String nowDate = 'Date ${now.day}/${now.month}/${now.year}';
   static String l;
   static String s;
   static bool valid;
-  static String name;
-
+  static String message;
   static String _cep, _adress, _uf, _neighborhood, _street;
-  String get Cep => _cep;
+  // ignore: non_constant_identifier_names
   String get Adress => _adress;
+  // ignore: non_constant_identifier_names
+  String get Cep => _cep;
+  // ignore: non_constant_identifier_names
   String get Uf => _uf;
+  // ignore: non_constant_identifier_names
   String get Neighborhood => _neighborhood;
+  // ignore: non_constant_identifier_names
   String get Street => _street;
-
-  static String getAdress = '$_street \n Bairro: ${_neighborhood}';
+  static String getAdress = '$_street \n Bairro: $_neighborhood';
 }
 
 class Suport {
   AssetBundle assetBundle;
   RandomAccessFile raf;
-  String data = null;
+  String data;
   int cont;
+  Timer timer;
   bool exists;
 
-  verificFolder() {
-    dire(Auxiliary.folderLog, Auxiliary.fileLog);
-    dire(Auxiliary.folderUser, Auxiliary.fileUser);
+  _dateTime() {
+    // print('${Auxiliary.nowDate}');
+    //  print('${Auxiliary.nowTime}');
+    if (now.hour > 0) Auxiliary.message = "Bom Dia";
+    if (now.hour < 23 && now.hour > 17 || now.hour == 23)
+      Auxiliary.message = "Boa Noite";
+    if (now.hour < 17 && now.hour > 12 || now.hour == 17)
+      Auxiliary.message = "Boa Tarde";
   }
 
-  dateTime() {
-    print('${Auxiliary().nowDate}');
-    print('${Auxiliary().nowTime}');
-  }
+  _cFile(String filePath) {
+    bool exists;
+    Directory dir = Directory("$filePath");
+    File file = new File('${dir.path}');
 
-  _cDirectory(String folderPath, String filePath) async {
-    // await assetBundle.load(filePath);
-    Directory dir = Directory(Auxiliary.folderUser);
-
-    print("O PATH DA FOLDER ${dir.path}");
-
-    // load_path() async{
-    await rootBundle.load(filePath);
-    await rootBundle.load(dir.path);
-    // }
-
-    dir.existsSync() ? exists = true : exists = false;
-    if (exists == true)
-      writing('Found ${folderPath}', Auxiliary.allLog);
+    if (file.existsSync() && filePath.isNotEmpty)
+      exists = true;
     else
-      writing('Criando path ...', Auxiliary.allLog);
+      exists = false;
 
-    if (exists == false) {
-      (dir.createSync(recursive: true)); //CREATE DIRECTORY
-      writing('Create sucessful ${folderPath}', Auxiliary.allLog);
-    }
-
-    File file = new File('${dir.path}${filePath}');
-
-    print("O PATH DO FILE ${file.path}");
-
-    file.existsSync() ? exists = true : exists = false;
     if (!exists) {
       file.createSync(recursive: true); // CREATE FILE
       file.existsSync()
-          ? writing('File create successful ${file.path}', Auxiliary.allLog)
-          : writing('Fail create file ${file.path}', Auxiliary.allLog);
+          ? writing('File create successful ${file.path}', Auxiliary.alllog)
+          : writing('Fail create file ${file.path}', Auxiliary.alllog);
     } else
-      writing('File exists ${filePath}', Auxiliary.allLog);
+      writing('File exists $filePath', Auxiliary.alllog);
+  }
+
+  _cDirectory(
+    String folderPath,
+  ) async {
+    Directory dir = Directory(folderPath);
+    exists = null;
+    dir.existsSync() ? exists = true : exists = false;
+
+    if (exists == false) {
+      dir.createSync(recursive: true);
+    }
+
+    if (exists == true)
+      await writing('Found $folderPath', Auxiliary.alllog);
+    else
+      await writing('Criando path ...', Auxiliary.alllog);
   }
 
   _write(var fileDate, String path) async {
-    //bool isShown = await Permission.contacts.shouldShowRequestRationale;
-    //if (!isShown) permission();
-    if (await Permission.locationWhenInUse.serviceStatus.isEnabled) {
-      File file = File(path);
-      cont = 0;
-      _whatis(fileDate);
+    //  if (_getPermission(Permission.WriteExternalStorage) == true) {
+    //await Permission.locationWhenInUse.serviceStatus.isEnabled) {
+    File file = File(path);
+    cont = 0;
+    _whatis(fileDate);
 
-      if (data != '' && data != null && cont > 1) {
-        raf = file.openSync(mode: FileMode.write);
-        raf.writeStringSync(data);
-        raf.flushSync();
-        raf.closeSync();
-        print('Usuario salvo com sucesso');
-        cont = 1;
-      }
-      if (cont < 1) {
-        raf = file.openSync(mode: FileMode.append);
-        raf.writeStringSync('${Auxiliary().nowDate} -> $fileDate\n');
-        raf.flushSync();
-        raf.closeSync();
-        cont = 1;
-      }
-    } else {
-      print('Sem permissao para executar');
+    if (data != '' && data != null && cont > 1) {
+      raf = file.openSync(mode: FileMode.write);
+      raf.writeStringSync(data);
+      raf.flushSync();
+      raf.closeSync();
+      print('Usuario salvo com sucesso');
+      cont = 1;
     }
+    if (cont < 1) {
+      raf = file.openSync(mode: FileMode.append);
+      raf.writeStringSync('${Auxiliary.nowDate} -> $fileDate\n');
+      raf.flushSync();
+      raf.closeSync();
+      cont = 1;
+    }
+    // } else
+    //   print('No permission to writing files ');
   }
 
-  _getPermission() async {
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-      return status;
-    }
-  }
+  // _getPermission(dynamic permission) async {
+  //   bool status = await SimplePermissions.checkPermission(permission);
+  //   if (!status) {
+  //     var status = await SimplePermissions.requestPermission(permission);
+  //     if (status == PermissionStatus.authorized) return true;
+  //   }
+  // }
 
   _read(var data, String key) async {
     //add randomacessfile in mode read
+    //if (_getPermission(Permission.ReadExternalStorage) == true) {
     var file;
     if (data == Auxiliary.allusr) {
       file = File(data);
@@ -140,13 +142,16 @@ class Suport {
       });
 
       if (key == 'u') {
-        dynamic data = await rootBundle
-            .loadString(json.decode(file.readAsString(encoding: utf8)));
+        // TESTE DE LEITURA DE ARQUIVO JSON
+        //  Map<String, dynamic> settings =
+        // jsonDecode(await File(file.path).readAsString());
+
+        // dynamic data = await rootBundle
+        //     .loadString(json.decode(file.readAsString(encoding: utf8)));
 
         Auxiliary.l = data['usr'];
         Auxiliary.s = data['pwd'];
         Auxiliary.valid = data['valid'];
-        Auxiliary.name = data['name'];
       } else
         return;
     } else {
@@ -154,6 +159,8 @@ class Suport {
       file.readAsLinesSync();
       print(file);
     }
+    // } else
+    //   print('No permission to reading files or folders');
   }
 
   _whatis(var file) {
@@ -172,6 +179,7 @@ class Suport {
   }
 
   _viacep(String date) async {
+    // ignore: non_constant_identifier_names
     var CEP = new via_cep();
     var result = await CEP.searchCEP('$date', 'json', 'uper');
 
@@ -187,15 +195,68 @@ class Suport {
     }
   }
 
-  dynamic getDocuments() async {
-    Directory baseDir = await getApplicationDocumentsDirectory();
-    return baseDir;
+  getPermissionSatus(Permission permission) async {
+    var status = await permission.status;
+    if (status.isGranted) {
+      getDocuments();
+      if (Auxiliary.folderLog != '') {
+        datetime();
+        verificFolder();
+        verificFile();
+        // reader();
+      }
+    }
+
+    if (status.isDenied) {
+      print('Permissoa negada');
+      getPermission(permission);
+    }
   }
 
-  dire(String direc, String fil) => _cDirectory(direc, fil);
+  getDocuments() {
+    if (Platform.isAndroid) {
+      Platform.environment.keys.forEach((key) {
+        if (key == "EXTERNAL_STORAGE") {
+          Auxiliary.folderApp = Platform.environment[key] + '/RotaRoda';
+          Auxiliary.folderUser = '${Auxiliary.folderApp}/settings';
+          Auxiliary.folderLog = '${Auxiliary.folderApp}/LOG';
+          Auxiliary.alllog = '${Auxiliary.folderLog}${Auxiliary.fileLog}';
+          Auxiliary.allusr = '${Auxiliary.folderUser}${Auxiliary.fileUser}';
+          return;
+        }
+      });
+    }
+  }
+  // Directory baseDir = await getApplicationDocumentsDirectory();
+  // Auxiliary.folderUser = baseDir;
+
+  dire(String direc) => _cDirectory(direc);
+
+  file(String fil) => _cFile(fil);
+
   writing(var date, String path) => _write(date, path);
-  permission() => _getPermission();
+
+  // permission(dynamic permission) => _getPermission(permission);
+
+  datetime() => _dateTime();
+
+  verificFolder() {
+    dire(Auxiliary.folderLog);
+    dire(Auxiliary.folderUser);
+  }
+
+  verificFile() {
+    file(Auxiliary.allusr);
+    file(Auxiliary.alllog);
+  }
+
   //Le o usuario gravado no json
   reader() => _read(Auxiliary.allusr, 'u');
-  via_Cep(String date) async => _viacep(date);
+  viaCep(String date) async => _viacep(date);
+
+  void getPermission(Permission permission) async {
+    if (await permission.request().isGranted) {
+      getPermissionSatus(permission);
+    }
+  }
 }

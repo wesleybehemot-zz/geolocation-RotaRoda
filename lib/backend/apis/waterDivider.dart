@@ -5,11 +5,11 @@ String retorno = '';
 String _name;
 String _surname;
 
-String get Name => _name;
-void set Name(String value) => _name = value;
+String get getName => _name;
+set setName(String value) => _name = value;
 
-String get Surname => _surname;
-void set Surname(String value) => _surname = value;
+String get getSurname => _surname;
+set setSurname(String value) => _surname = value;
 
 whoIsCalling(String data, String whoIsIt) {
   switch (whoIsIt) {
@@ -29,7 +29,7 @@ end() {
     return;
 }
 
-bool valid_adress(String adress) {
+validadress(String adress) {
   if (adress != null || adress != '') {
     if (adress.length == 8 && !adress.contains(new RegExp(r'[A-Z]'))) {
       returns = true;
@@ -47,15 +47,15 @@ check(bool valid,
     String user,
     String surname,
     String email,
-    String board_car,
-    String adress_job]) {
+    String boardcar,
+    String adressjob]) {
   retorno = '';
 
   if (name != null && name != '') {
     if (name.length < 2)
       retorno = 'Faltou o nome\n';
     else
-      Name =
+      setName =
           '${name.substring(0, 1).toUpperCase()}${name.substring(1).toLowerCase()}';
   }
 
@@ -63,7 +63,7 @@ check(bool valid,
     if (surname.length < 0)
       retorno += 'Faltou o sobrenome\n';
     else
-      Surname =
+      setSurname =
           '${surname.substring(0, 1).toUpperCase()}${surname.substring(1).toLowerCase()}';
   }
 
@@ -88,6 +88,7 @@ check(bool valid,
     }
 
     String splitig = email.toString();
+    // ignore: deprecated_member_use
     var l = List();
     l = splitig.split('@');
     splitig = l[1];
@@ -104,12 +105,14 @@ check(bool valid,
     retorno = 'Email invalído\n';
   }
 
-  board_car != null || board_car != ''
-      ? board_car.length < 7
+  boardcar != null || boardcar != ''
+      // ignore: unnecessary_statements
+      ? boardcar.length < 7
       : retorno += 'Placa incorreta \n';
 
-  adress_job != null || adress_job != ''
-      ? adress_job.length < 5
+  adressjob != null || adressjob != ''
+      // ignore: unnecessary_statements
+      ? adressjob.length < 5
       : retorno += 'Endereço esta detalhado?\n';
 
   //end();
