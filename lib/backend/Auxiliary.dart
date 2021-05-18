@@ -1,11 +1,11 @@
 import 'dart:convert';
+
 import 'dart:io';
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rotaroda/backend/apis/waterDivider.dart';
 import 'package:via_cep/via_cep.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:super_easy_permissions/super_easy_permissions.dart';
+
 //import 'package:simple_permissions/simple_permissions.dart';
 
 DateTime now = DateTime.now();
@@ -70,6 +70,7 @@ class Suport {
       exists = false;
 
     if (!exists) {
+      print(exists);
       file.createSync(recursive: true); // CREATE FILE
       file.existsSync()
           ? writing('File create successful ${file.path}', Auxiliary.alllog)
@@ -84,7 +85,7 @@ class Suport {
     Directory dir = Directory(folderPath);
     exists = null;
     dir.existsSync() ? exists = true : exists = false;
-
+    print(exists);
     if (exists == false) {
       dir.createSync(recursive: true);
     }
@@ -121,13 +122,13 @@ class Suport {
     //   print('No permission to writing files ');
   }
 
-  // _getPermission(dynamic permission) async {
-  //   bool status = await SimplePermissions.checkPermission(permission);
-  //   if (!status) {
-  //     var status = await SimplePermissions.requestPermission(permission);
-  //     if (status == PermissionStatus.authorized) return true;
-  //   }
-  // }
+  //  _getPermission(dynamic permission) async {
+  //    bool status = await SimplePermissions.checkPermission(permission);
+  //    if (!status) {
+  //      var status = await SimplePermissions.requestPermission(permission);
+  //      if (status == PermissionStatus.authorized) return true;
+  //    }
+  //  }
 
   _read(var data, String key) async {
     //add randomacessfile in mode read
@@ -195,25 +196,7 @@ class Suport {
     }
   }
 
-  getPermissionSatus(Permission permission) async {
-    var status = await permission.status;
-    if (status.isGranted) {
-      getDocuments();
-      if (Auxiliary.folderLog != '') {
-        datetime();
-        verificFolder();
-        verificFile();
-        // reader();
-      }
-    }
-
-    if (status.isDenied) {
-      print('Permissoa negada');
-      getPermission(permission);
-    }
-  }
-
-  getDocuments() {
+  static getDocuments() {
     if (Platform.isAndroid) {
       Platform.environment.keys.forEach((key) {
         if (key == "EXTERNAL_STORAGE") {
@@ -222,8 +205,9 @@ class Suport {
           Auxiliary.folderLog = '${Auxiliary.folderApp}/LOG';
           Auxiliary.alllog = '${Auxiliary.folderLog}${Auxiliary.fileLog}';
           Auxiliary.allusr = '${Auxiliary.folderUser}${Auxiliary.fileUser}';
-          return;
+          print(key);
         }
+        return;
       });
     }
   }
@@ -231,13 +215,8 @@ class Suport {
   // Auxiliary.folderUser = baseDir;
 
   dire(String direc) => _cDirectory(direc);
-
   file(String fil) => _cFile(fil);
-
   writing(var date, String path) => _write(date, path);
-
-  // permission(dynamic permission) => _getPermission(permission);
-
   datetime() => _dateTime();
 
   verificFolder() {
@@ -254,9 +233,36 @@ class Suport {
   reader() => _read(Auxiliary.allusr, 'u');
   viaCep(String date) async => _viacep(date);
 
-  void getPermission(Permission permission) async {
-    if (await permission.request().isGranted) {
-      getPermissionSatus(permission);
+  static getStatusPermission(Permissions permission) async {
+    dynamic result = await SuperEasyPermissions.isGranted(permission);
+    print(result);
+    if (!result) result = getPermission(permission);
+    return result;
+  }
+
+  startVerific(Permissions permissions) async {
+    dynamic result = await getStatusPermission(permissions);
+    if (result == true) getDocuments();
+    if (Auxiliary.alllog != '') {
+      verificFolder();
+      verificFile();
     }
+  }
+  // Duration duration = Duration(seconds: 1);
+  // Timer.periodic(duration, (timer) {
+  //   print(DateTime.now());
+  //   if (result != null) {
+  //     print('entrou');
+  //     timer.cancel();
+  //     if (result) {
+  //       methods();
+  //     }
+  //   }
+  // });
+
+  static Future getPermission(Permissions permissions) async {
+    bool result = await SuperEasyPermissions.askPermission(permissions);
+    print(result);
+    return result;
   }
 }

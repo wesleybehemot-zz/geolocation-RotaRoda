@@ -1,16 +1,8 @@
-import 'package:permission_handler/permission_handler.dart';
-import 'package:rotaroda/backend/Auxiliary.dart';
+import 'package:rotaroda/backend/Auxiliary.dart' as sup;
+import 'package:super_easy_permissions/super_easy_permissions.dart';
 
 class Push {
-  // Auxiliary axi = Auxiliary();
-  // Person person = Person();
-  Suport sup = Suport();
-
-  Push() {
-    sup.getPermissionSatus(Permission.storage);
-  }
-  push() async {
-   
-    
+  static initialProject() {
+    sup.Suport().startVerific(Permissions.storage);
   }
 }

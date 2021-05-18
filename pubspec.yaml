@@ -30,8 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.0
   via_cep: ^1.0.6
   google_maps:
-  permission_handler: ^6.1.3
-  #google_maps_flutter: ^2.0.3
+  super_easy_permissions:
+
 
   
 dev_dependencies:

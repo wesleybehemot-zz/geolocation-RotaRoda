@@ -10,8 +10,7 @@ String title;
 
 void main() {
   runApp(Methodbuild());
-  Push();
-  Push().push();
+  Push.initialProject();
 }
 
 class Methodbuild extends StatelessWidget {
