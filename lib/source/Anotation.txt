@@ -1,0 +1,89 @@
+
+
+"PATH"
+"ANDROID_BOOTLOGO"
+"ANDROID_ROOT"
+"ANDROID_ASSETS"
+"ANDROID_DATA"
+"ANDROID_STORAGE" //Pastas do / 
+"ANDROID_ART_ROOT"
+"ANDROID_I18N_ROOT"
+"ANDROID_TZDATA_ROOT"
+"EXTERNAL_STORAGE"
+"ASEC_MOUNTPOINT"
+"BOOTCLASSPATH"
+"DEX2OATBOOTCLASSPATH"
+"SYSTEMSERVERCLASSPATH"
+"DOWNLOAD_CACHE"
+"ANDROID_SOCKET_zygote"
+"ANDROID_SOCKET"
+
+//################################################
+
+  /// Android: Allows an application to access any geographic locations
+  /// persisted in the user's shared collection.
+  accessMediaLocation,
+
+  /// When running on Android Q and above: Activity Recognition When running
+  /// on Android < Q: Nothing iOS: Nothing
+  activityRecognition,
+
+  /// iOS 13 and above: The authorization state of Core Bluetooth manager.
+  /// When running < iOS 13 or Android this is always allowed.
+  bluetooth,
+
+  /// Android: Calendar iOS: Calendar (Events)
+  calendar,
+
+  /// Android: Camera iOS: Photos (Camera Roll and Camera)
+  camera,
+
+  /// Android: Contacts iOS: AddressBook
+  contacts,
+
+  /// Android: Ignore Battery Optimizations
+  ignoreBatteryOptimizations,
+
+  /// Android: Fine and Coarse Location iOS: CoreLocation (Always and WhenInUse)
+  location,
+
+  /// Android: When running on Android < Q: Fine and Coarse Location
+  /// When running on Android Q and above: Background Location Permission iOS: CoreLocation - Always
+  locationAlways,
+
+  /// Android: Fine and Coarse Location iOS: CoreLocation - WhenInUse
+  locationWhenInUse,
+
+  /// Android: None iOS: MPMediaLibrary
+  mediaLibrary,
+
+  /// Android: Microphone iOS: Microphone
+  microphone,
+
+  /// Android: Notification iOS: Notification
+  notification,
+
+  /// Android: Phone iOS: Nothing
+  phone, //CHAMADAS
+
+  /// Android: Nothing iOS: Photos iOS 14+ read & write access level
+  photos,
+
+  /// Android: Nothing iOS: Photos iOS 14+ read & write access level
+  photosAddOnly,
+
+  /// Android: Nothing iOS: Reminders
+  reminders,
+
+  /// Android: Body Sensors iOS: CoreMotion
+  sensors,
+
+  /// Android: Sms iOS: Nothing
+  sms,
+
+  /// Android: Microphone iOS: Speech
+  speech,
+
+  /// Android: External Storage iOS: Access to folders like Documents
+  ///  or Downloads. Implicitly granted.
+  storage,
