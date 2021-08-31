@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+
+        html {
+            display: table;
+            margin: auto;
+        }
+
+        body {
+        
+            display: table-cell;
+            vertical-align: middle;
+            color: rgb(0, 0, 0);
+            background: #ffffff;
+            margin: 0;
+            font-family: "Oswald";
+        }
+
+        h5 {
+            margin-left: 20px;
+            text-align: center;
+            font-size: 11pt;
+            border-radius: 10px;
+            background-color: #868686;
+            font-family: "Oswald";
+        }
+
+        #title {
+          margin-bottom: 25px;
+          margin-top: 16px;
+            font-size: 20pt;
+            font-family: "Oswald";
+            text-align: center;
+        }
+
+        #wallpaper {
+            border-radius: 15px;
+            border: 1px;
+            margin-top: 25px;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+        footer {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 9pt;
+            font-family: "Roboto";
+        }
+
+        .term {
+            margin-left: 10px;
+            margin-right: 10px;
+            border: 0.5px transparent;
+            padding: 7px;
+        }
+        
+        /* Center the loader */
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 30px;
+            height: 30px;
+            margin: -15px 0 0 -15px;
+            border: 5px solid #ffffff;
+            border-radius: 50%;
+            border-top: 5px solid #000000;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+              
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Add animation to "page content" */
+        .animate-bottom {
+            display:flex; 
+            flex-direction:column; 
+            justify-content:center;
+            min-height:100vh;
+            position: relative;
+            -webkit-animation-name: animationbottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animationbottom;
+            animation-duration: 1s
+        }
+        
+        @-webkit-keyframes animationbottom {
+            from {
+                bottom: -100px;
+                opacity:0
+            }
+            to {
+                bottom: 0px;
+                opacity: 1
+            }
+        }
+
+        @keyframes animationbottom {
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
+        #myDiv {
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+ <!--  -->
+<body onload="myFunction()" style="margin:0;">
+
+    <div id="loader"></div>
+
+    <div style="display:none;" id="myDiv" class="animate-bottom">
+        <div>
+           <!-- <img id="wallpaper" src="pexels.jpg" alt="Logo" height="125" width="350"> --> 
+        </div>
+
+        <div id="title">
+           Termos de Uso
+        </div>
+        <div class="term">
+            <h5>  000-1 Acesso aos arquivos local</h5> <p>
+                O acesso aos arquivos locais são solicitados ao iniciar o software e são criadas pastas no armazenamento interno do dispositivo para logs do sistema e informações para prestação de suporte
+            </p>
+        </div>
+        <div class="term">
+            <h5> 000-2 Negação de serviço </h5>
+            <p>
+                Todo acesso requisitado negado irá gerar uma negação de serviço, bem como o mal funcionamento da aplicação podendo ocorrer bugs, então é recomdavél a permissão do acesso assim que solicitado.
+            </p>
+        </div>
+        <div class="term">
+            <h5> 000-3 Politica de dados</h5><p>
+                Os dados fornecidos ao sistema irão e deverão estar em controle do utilizador por todo o tempo, passando transaparência na utilização, todos os dados podem ser excluídos permanentemente e mofificados, nenhum dado é realocado em servidores externos, resalvo caso de backup, ao contrario serão mantidos no dispositivo até que seja solicitado o pedido de backup.
+            </p>
+        </div>
+        <div class="term">
+            <h5> 000-4 Localização e captura de dados</h5><p>
+                Acesso a localização é requesitado e pode ser negado,se for negado,o dado deverá ser passado manualmente, os dados capturados para o funcionamento da aplicação, são enviados a google para que seja possível a integração com o mapa, seguindo a politica da empresa em questão.
+            </p>
+        </div>
+        <div class="term">
+            <h5>000-5 Dados de terceiros</h5><p>
+                A intrudução de informação de terceiros será deletada depoua do uso da informação, afim de manter a privacidade do cliente.
+            </p>
+        </div>
+        <footer>
+          <hr style="color: #86868670; width: 80%;">
+        </br>
+        SaturnCode 2022 ®
+    </footer>
+</div>
+<script>
+    var myVar;
+
+    function myFunction() {
+        myVar = setTimeout(showPage, 3000);
+    }
+
+    function showPage() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("myDiv").style.display = "block";
+    }
+    
+</script>
+</body>
+</html>
