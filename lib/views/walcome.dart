@@ -96,7 +96,7 @@ class Welcome extends StatelessWidget {
                   'Politica de Privacidade \n     SaturnCode 2021',
                 ),
                 onTap: () => launch(
-                    'https://wooded-cobbler-ea7.notion.site/Pol-tica-de-privacidade-93bde79dbbc1415eb8600f8e838d46d4',
+                    privaci,
                     forceSafariVC: true,
                     forceWebView: false,
                     webOnlyWindowName: 'Chorme',
